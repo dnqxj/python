@@ -1,3 +1,10 @@
+
+"""
+    目的
+        - 访问某人微信某时间段内所有微博信息，抓取发布时间，微博链接，内容
+        - 访问鞠婧祎 微博数据，并下载图片
+"""
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -5,9 +12,6 @@ import csv
 import os
 import requests
 
-"""
-    访问鞠婧祎 微博数据，并下载图片
-"""
 
 # url = 'https://weibo.com/bgsxy?is_ori=1&key_word=*&start_time=2017-01-18&end_time=2020-03-21&is_search=1&is_searchadv=1#_0'
 img_output = './imgs/'
@@ -60,21 +64,22 @@ def find_cards_info():
         start = card.find_element_by_css_selector(start_sel).text
 
         img_elements = card.find_elements_by_css_selector(img_sel)
-        if img_elements:
-            for img in img_elements:
-                img_href = img.get_attribute('src')
-                if img_href:
-                    # 处理图片链接
-                    img_href = img_href.replace("thumb150", "mw690");
-                    img_href = img_href.replace("orj360", "mw690");
-                    img_href = img_href.replace("orj480", "mw690");
-
-                    time.sleep(1)
-                    # 处理img后的?
-                    img_filename = img_href.split('?')[0]
-                    img_filename = img_filename.split('/')[-1]
-                    save_img(img_href, img_filename)
-                    img_list.append(img_href)
+        # 图片下载，会耗费大量时间
+        # if img_elements:
+        #     for img in img_elements:
+        #         img_href = img.get_attribute('src')
+        #         if img_href:
+        #             # 处理图片链接
+        #             img_href = img_href.replace("thumb150", "mw690");
+        #             img_href = img_href.replace("orj360", "mw690");
+        #             img_href = img_href.replace("orj480", "mw690");
+        #
+        #             time.sleep(0.3)
+        #             # 处理img后的?
+        #             img_filename = img_href.split('?')[0]
+        #             img_filename = img_filename.split('/')[-1]
+        #             save_img(img_href, img_filename)
+        #             img_list.append(img_href)
 
         info_list.append([date, link, content, start])
     return info_list, img_list
